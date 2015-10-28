@@ -1,0 +1,93 @@
+/*
+* Copyright (C) 2012 Texas Instruments Incorporated - http://www.ti.com/
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License version 2 as
+* published by the Free Software Foundation.
+*/
+/dts-v1/;
+/plugin/;
+
+/ {
+	compatible = "ti,beaglebone-black";
+	part-number = "BB-PLAINDAC";
+	version = "00A0";
+
+	/* state the resources this cape uses */
+	exclusive-use =
+		/* the pin header uses */
+		"P9.27",	/* mcasp1: mcasp1_fsx */
+		"P9.41",	/* mcasp1: mcasp1_axr0 */
+		"P9.42",	/* mcasp1: mcasp1_aclkx */
+		/* the hardware IP uses */
+		"mcasp1";
+
+	fragment@0 {
+		target = <&am33xx_pinmux>;
+		__overlay__ {
+			mcasp1_pins: mcasp1_pins {
+				pinctrl-single,pins = <
+					0x1a4 0x33 /* mcasp1_fsx    MODE3 | INPUT */
+					0x1b4 0x37 /* GPIO0_20      MODE7 | INPUT */
+					0x1a8 0x13 /* mcasp1_axr0   MODE3 | OUTPUT */
+					0x164 0x37 /* GPIO0_7       MODE7 | INPUT */
+					0x1a0 0x33 /* mcasp1_aclkx  MODE3 | INPUT */
+				>;
+			};
+		};
+	};
+
+	fragment@1 {
+		target = <&i2c2>;
+		__overlay__ {
+			#address-cells = <1>;
+			#size-cells = <0>;
+
+			pcm5122: pcm5122@4c {
+				compatible = "ti,pcm5122";
+				reg = <0x4c>;
+
+				clocks = <&osc24576>;
+				pll-in = <4>;
+				pll-out = <6>;
+			};
+		};
+	};
+
+	fragment@2 {
+		target = <&mcasp1>;
+		__overlay__ {
+			pinctrl-names = "default";
+			pinctrl-0 = <&mcasp1_pins>;
+
+			status = "okay";
+
+			op-mode = <0>;          /* MCASP_IIS_MODE */
+			tdm-slots = <2>;
+			num-serializer = <16>;
+			serial-dir = <  /* 0: INACTIVE, 1: TX, 2: RX */
+				1 0 0 0
+				0 0 0 0
+				0 0 0 0
+				0 0 0 0
+			>;
+			tx-num-evt = <1>;
+			rx-num-evt = <1>;
+		};
+	};
+
+	fragment@3 {
+		target = <&ocp>;
+		__overlay__ {
+
+			sound@plaindac {
+				compatible = "polyvection,am335x-plaindac";
+				polyvection,model = "PlainDAC";
+				polyvection,audio-codec = <&pcm5122>;
+				polyvection,mcasp-controller = <&mcasp1>;
+			};
+		};
+
+	};
+
+};

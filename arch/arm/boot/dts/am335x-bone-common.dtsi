@@ -411,6 +411,15 @@
 				};
 			};
 
+			/* PolyVection PlainDAC */
+			cape@17 {
+				part-number = "BB-PLAINDAC";
+				version@00A0 {
+					version = "00A0";
+					dtbo = "cape-boneblack-plaindac-00A0.dtbo";
+				};
+			};
+
 		};
 	};
 

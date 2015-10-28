@@ -78,3 +78,12 @@
 		300000   969000
 	>;
 };
+
+&ocp {
+    osc24576: osc24576 {
+        compatible = "fixed-clock";
+        #clock-cells = <0>;
+
+        clock-frequency = <24576000>;
+    };
+};

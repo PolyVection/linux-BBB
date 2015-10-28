@@ -519,9 +519,6 @@ static int davinci_mcasp_set_dai_fmt(struct snd_soc_dai *cpu_dai,
 		mcasp_clr_bits(dev->base + DAVINCI_MCASP_RXFMCTL_REG, FSRDUR);
 		break;
 	case SND_SOC_DAIFMT_I2S:
-		mcasp_set_bits(dev->base + DAVINCI_MCASP_TXFMCTL_REG, FSXDUR);
-		mcasp_set_bits(dev->base + DAVINCI_MCASP_RXFMCTL_REG, FSRDUR);
-		break;
 	default:
 		/* configure a full-word SYNC pulse (LRCLK) */
 		mcasp_set_bits(dev->base + DAVINCI_MCASP_TXFMCTL_REG, FSXDUR);
@@ -963,8 +960,6 @@ static const struct snd_soc_dai_ops davinci_mcasp_dai_ops = {
 				SNDRV_PCM_FMTBIT_U8 | \
 				SNDRV_PCM_FMTBIT_S16_LE | \
 				SNDRV_PCM_FMTBIT_U16_LE | \
-				SNDRV_PCM_FMTBIT_S24_LE | \
-				SNDRV_PCM_FMTBIT_U24_LE | \
 				SNDRV_PCM_FMTBIT_S24_3LE | \
 				SNDRV_PCM_FMTBIT_U24_3LE | \
 				SNDRV_PCM_FMTBIT_S32_LE | \

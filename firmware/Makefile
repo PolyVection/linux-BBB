@@ -229,6 +229,10 @@ fw-shipped-$(CONFIG_CAPE_BEAGLEBONE) += \
 fw-shipped-$(CONFIG_CAPE_BEAGLEBONE) += \
 	PBXLCD-01-00A0.dtbo
 
+# PolyVection PlainDAC
+fw-shipped-$(CONFIG_SND_SOC_PLAINDAC) += \
+	cape-boneblack-plaindac-00A0.dtbo
+
 # the geiger cape
 fw-shipped-$(CONFIG_CAPE_BEAGLEBONE_GEIGER) += \
 	cape-bone-geiger-00A0.dtbo
